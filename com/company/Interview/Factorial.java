@@ -10,8 +10,8 @@ import java.util.Map;
 public class Factorial {
 
     public static void main(String[] args) {
-        System.out.println(factorial(200));
-        System.out.println(factorial(205));
+        System.out.println(factorial(3));
+        System.out.println(factorial(2));
     }
 
     static Map<Integer, BigInteger> cache = new HashMap<>();
