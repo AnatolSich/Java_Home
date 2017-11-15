@@ -33,7 +33,8 @@ public class Task05 {
     static int countHorses = 10;
 
     public static void main(String[] args) {
-        calculateHorsesFinished(prepareHorsesAndStart());
+        List<Horse> list = prepareHorsesAndStart();
+        while (calculateHorsesFinished(list) != countHorses){}
     }
 
     private static int calculateHorsesFinished(List<Horse> list){
@@ -42,11 +43,10 @@ public class Task05 {
              ) {
             if(h.isFinished()) count++;
             else {
+                System.out.println("Waiting for " + h.getName());
                 try {
                     h.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                } catch (InterruptedException e) {}
             }
         }
         return count;
@@ -60,8 +60,6 @@ public class Task05 {
             list.add(tempHorse);
             tempHorse.start();
         }
-
-
         return list;
     }
 }
@@ -78,8 +76,8 @@ class Horse extends Thread{
 
     @Override
     public void run() {
-        for (int i = 0; i < 1000; i++) {
-            if (i==999) {
+        for (int i = 0; i < 10000; i++) {
+            if (i==9999) {
                 this.isFinished = true;
                 System.out.println(this.getName() + " has finished the race!");
             }

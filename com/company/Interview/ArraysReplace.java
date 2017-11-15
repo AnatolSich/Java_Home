@@ -24,7 +24,7 @@ public class ArraysReplace {
         List<Integer> list = finding(arrayInput, arrayFind);
         int n = arrayFind.length;
 
-
+return arrayInput;
     }
 
     private static List<Integer> finding(int[] arrayInput, int[] arrayFind) {
