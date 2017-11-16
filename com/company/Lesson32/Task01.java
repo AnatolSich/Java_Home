@@ -27,43 +27,42 @@ import static com.company.Lesson32.Task01.totalCountSpeeches;
 */
 
 public class Task01 {
-    static int totalCountSpeeches = 200;
-    static int soundsInOneSpeech = 1000000;
+    static volatile int totalCountSpeeches = 200;
+    static volatile int soundsInOneSpeech = 1000000;
 
     public static void main(String[] args) throws InterruptedException {
-        Politic p1 = new Politic("Иванов");
-        Politic p2 = new Politic("Петров");
-        Politic p3 = new Politic("Сидоров");
-
+        Politic p1 = new Politic("Иванов",1);
+        Politic p2 = new Politic("Петров",1);
+        Politic p3 = new Politic("Сидоров",1);
+       // p1.setPriority(Thread.MAX_PRIORITY);
         p1.start();
-        p1.join();
         p2.start();
         p3.start();
 
+        while (p1.getCountSpeaches() + p2.getCountSpeaches() + p3.getCountSpeaches() < totalCountSpeeches){}
 
+        System.out.println(p1);
+        System.out.println(p2);
+        System.out.println(p3);
 
-
-
-            System.out.println(p1);
-            System.out.println(p2);
-            System.out.println(p3);
-
-        }
+    }
 
 
 }
 
 class Politic extends Thread {
-    private int countSounds;
+    private volatile int countSounds;
+    private int i;
 
-    public Politic(String name) {
+    public Politic(String name, int i) {
         super(name);
+        this.i=i;
     }
 
     @Override
     public void run() {
         while (countSounds < totalCountSpeeches * soundsInOneSpeech) {
-            countSounds++;
+            countSounds+=i;
         }
     }
 
