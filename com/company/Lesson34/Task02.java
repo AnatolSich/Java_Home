@@ -17,8 +17,8 @@ package com.company.Lesson34;
   -- пока переменная isStopped равняется false выполнять метод doSeveralSteps;
   -- отлавливать все checked исключения.
 5. В классе Runner создать параметры name, speed, stopwatch - подумать, какой тип данный у каждого параметра
-5.1 Создать конструктор для инициализация всех параметров класса Runner
-5.2 Сделать переменный name, speed приватными, создать для них геттеры
+5.1 Создать конструктор для инициализация всех параметров класса Runner, подумать как корректно инициализировать
+5.2 Сделать переменные name, speed приватными, создать для них геттеры
 5.3 Метод getSpeed() в классе Runner показывает, сколько шагов в секунду делает бегун.
 5.4 Создать метод start(), он должен запускать нить stopwatch
 6. Реализовать метод doSeveralSteps:
@@ -37,4 +37,87 @@ package com.company.Lesson34;
 */
 
 public class Task02 {
+    static boolean isStopped;
+
+    public static void main(String[] args) {
+
+
+        Runner ivanov = new Runner("Иванов", 2);
+        Runner petrov = new Runner("Петров", 8);
+
+        ivanov.start();
+        petrov.start();
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        isStopped = true;
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+class Stopwatch extends Thread {
+    private Runner owner;
+    private int stepNumber;
+
+    public Stopwatch(String name, Runner owner) {
+        super(name);
+        this.owner = owner;
+    }
+
+    private void doSeveralSteps() {
+        this.stepNumber++;
+        int speed1 = owner.getSpeed();
+        try {
+            Thread.sleep(1000 / speed1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(owner.getName() + " делает шаг №" + stepNumber + "!");
+    }
+
+    @Override
+    public void run() {
+        System.out.println(this.getName()+" запустился...");
+        while (!Task02.isStopped) {
+            try {
+                doSeveralSteps();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+class Runner {
+    private String name;
+    private int speed;
+    private Stopwatch stopwatch;
+
+    public Runner(String name, int speed) {
+        this.name = name;
+        this.speed = speed;
+        this.stopwatch = new Stopwatch("Секундомер " + this.name + "а", this);
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void start() {
+        stopwatch.start();
+    }
 }
