@@ -3,11 +3,10 @@ package com.company.Lesson35;
 /**
  * Created by Toll on 18.11.2017.
  */
-
 /* Аэропорт
 1. В выполняющем классе создать метод waiting(), который отправляет нить в сон на 100мс
 2. В выполняющем классе создать метод takingOff(), который отправляет нить в сон на 100мс
-3. Создать класс Runway (взлетная полоса) (может отправлять 1 самолет за 1 секунду )
+3. Создать класс Runway (взлетная полоса)
 3.1 В классе Runway:
 - создать приватную переменную типа Thread
 - для переменной создать геттер и сеттер
@@ -32,75 +31,71 @@ package com.company.Lesson35;
 */
 
 public class Task02 {
-    static int planesTakenOff = 0;
+    static Run_way RUNWAY = new Run_way();
 
-    static void waiting(Plane plane) {
+    public static void main(String[] args) {
+
+        new PPlane("Ласточка");
+        new PPlane("Руслан");
+        new PPlane("Мрия");
+    }
+
+    static void waiting() {
         try {
-            plane.wait(1000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-}
-
-class Runway extends Thread {
-    boolean checking = false;
-    Plane plane;
-
-    public Plane getPlane() {
-        return plane;
-    }
-
-    public void setPlane(Plane plane) {
-        this.plane = plane;
-    }
-
-    @Override
-    public void run() {
-        while (true) {
-            if (plane.isAlreadyTakenOff) {
-                Task02.planesTakenOff++;
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+    static void takingOff() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
 
-class Plane extends Thread {
-    boolean isAlreadyTakenOff;
-    Runway runway;
+class Run_way {
+    boolean checking = false;
+    Thread plane=null;
 
-    public Plane(String name, Runway runway) {
+    public Thread getPlane() {
+        return plane;
+    }
+
+    public void setPlane(Thread plane) {
+        this.plane = plane;
+    }
+}
+
+class PPlane extends Thread {
+    boolean isAlreadyTakenOff =false;
+
+
+    public PPlane(String name) {
         super(name);
         this.start();
-        this.runway = runway;
     }
 
     @Override
     public void run() {
         while (!isAlreadyTakenOff) {
-            if (!runway.checking) {
-                runway.setPlane(this);
+            if (Task02.RUNWAY.getPlane()==null) {
+
+                Task02.RUNWAY.setPlane(this);
                 System.out.println(getName() + " взлетает");
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Task02.takingOff();
                 System.out.println(getName() + " уже в небе");
                 this.isAlreadyTakenOff = true;
-
-                runway.setPlane(null);
+                Task02.RUNWAY.setPlane(null);
 
 
             } else {
-                Task02.waiting(this);
                 System.out.println(getName() + " ожидает");
+                Task02.waiting();
+
             }
         }
     }

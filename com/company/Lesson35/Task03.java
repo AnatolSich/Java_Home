@@ -1,7 +1,10 @@
 package com.company.Lesson35;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Created by Toll on 18.11.2017.
+ * Created by Toll on 20.11.2017.
  */
 
 /* Обратный отсчет
@@ -24,4 +27,45 @@ package com.company.Lesson35;
 */
 
 public class Task03 {
+    static List<String> list= new ArrayList<>();
+
+    static {
+        for (int i = 0; i < 5; i++) {
+            list.add("Строка " + i);
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Thread thread = new Thread(new Countdown(3));
+        thread.start();
+    }
+}
+
+
+class Countdown implements Runnable {
+    private int countFrom;
+
+    private void printCountdown() {
+        for (int i=this.countFrom; i >= 0; i--) {
+            System.out.println(Task03.list.get(i));
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            countFrom--;
+        }
+    }
+
+    public Countdown(int countFrom) {
+        this.countFrom = countFrom;
+    }
+
+    @Override
+    public void run() {
+        while (countFrom > 0) {
+            printCountdown();
+        }
+    }
 }
