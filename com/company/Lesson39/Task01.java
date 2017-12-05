@@ -1,55 +1,56 @@
-package com.company.Interview;
+package com.company.Lesson39;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * Created by Toll on 25.11.2017.
- */
-public class Test_Executor {
+public class Task01 {
     public static void main(String[] args) {
-        List<String> strings = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            strings.add("" + i);
+        List<Integer> list = new ArrayList<>();
+        for (int i = 5; i < 100; i += 3) {
+            list.add(3 * i - 1);
+        }
+        List<Integer> listOut = new ArrayList<>();
+
+        listOut = reduce(list);
+        for (int i = 0; i < list.size(); i++) {
+
+            System.out.println(list.get(i) + "  " + listOut.get(i));
         }
 
-        strings = reduce(strings);
-
-        for (String string : strings) {
-            System.out.println(string);
-        }
     }
 
-    public static String map(String s){
-        return s + ".";
+    private static Integer map(Integer num) {
+        return num * 2;
     }
 
-    public static List<String> reduce(List<String> strings){
-        List<String> result = new ArrayList<>();
+    private static List<Integer> reduce(List<Integer> list) {
+
+        List<Integer> res = new ArrayList<>();
 
         ExecutorService executorService = Executors.newFixedThreadPool(100);
 
-        for (int i = 0; i < strings.size(); i++) {
-            String s = strings.get(i);
+        for (Integer i : list
+                ) {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
                     System.out.println(Thread.currentThread().getName() + " Start");
-                    result.add(map(s));
+                    res.add(map(i));
                     System.out.println(Thread.currentThread().getName() + " End");
                 }
             };
+
             executorService.execute(runnable);
         }
+
         executorService.shutdown();
-        while (!executorService.isTerminated()){}
+        while (!executorService.isTerminated()) {
+        }
         System.out.println("Finished all threads");
-        return result;
+        return res;
+
+
     }
-
-
 }
-
-
