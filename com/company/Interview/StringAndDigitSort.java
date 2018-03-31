@@ -1,59 +1,93 @@
-package com.company.Lesson38;
+package com.company.Interview;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Toll on 30.11.2017.
- */
-public class Task02 {
+public class StringAndDigitSort {
     public static void main(String[] args) {
-        //  System.out.println(isInt("2"));
         List<String> listIn = new ArrayList<>();
         listIn.add("g");
         listIn.add("9");
         listIn.add("b");
-        listIn.add("5");
+        listIn.add("5.5");
         listIn.add("1");
         listIn.add("a");
         listIn.add("e");
         listIn.add("y");
         listIn.add("j");
-        listIn.add("1");
+        listIn.add("1.01");
         listIn.add("l");
         listIn.add("c");
         listIn.add("5");
         listIn.add("a");
-        listIn.add("2");
-
-       /* System.out.println(findNextToEnd(listIn, 1));
-        System.out.println(findNextToStart(listIn, 5));*/
+        listIn.add("2.3");
 
 
         for (int i = 0; i < listIn.size(); i++) {
-            System.out.print(listIn.get(i) + " ");
+            System.out.print(listIn.get(i) + "    ");
         }
 
-        List<String> listOut = sorting(listIn);
+        List<String> listOut = bubbleSortOneFor(listIn);
 
 
         System.out.println();
         for (int i = 0; i < listOut.size(); i++) {
-            System.out.print(listOut.get(i) + " ");
+            System.out.print(listOut.get(i) + "    ");
         }
     }
 
-    private static List<String> sorting(List<String> list) {
-        for (int i = 0; i < list.size() - 1; ) {
+   /* private static List<String> bubbleSortTwoFor(List<String> list) {
+        boolean flag = true;
+
+        for (int i = 0; i < list.size(); i++) {
+
+            int j = 0;
+            if (!flag) j = 1;
+            String str = list.get(j);
+            String str2;
+            int next = findNextToEnd(list, j);
+
+
+
+
+            while (next != -100) {
+
+                if (!isDigital(str)) {
+                    str = list.get(j);
+                    str2 = list.get(next);
+                    if (str.compareTo(str2) > 0) {
+                        list.set(j, list.set(next, list.get(j)));
+                    }
+                } else if (isDigital(str)) {
+                    str = list.get(j);
+                    str2 = list.get(next);
+                    double n1 = Double.valueOf(str);
+                    double n2 = Double.valueOf(str2);
+                    if (n1 > n2) {
+                        list.set(j, list.set(next, list.get(j)));
+                    }
+                }
+
+                j = next;
+                next = findNextToEnd(list, j);
+            }
+
+
+        }
+        return list;
+    }
+*/
+
+    private static List<String> bubbleSortOneFor(List<String> list) {
+        for (int i = 0; i < list.size(); ) {
             String str = list.get(i);
             String str2;
 
 
-            if (!isInt(str)) {
+            if (!isDigital(str)) {
                 int next = findNextToEnd(list, i);
                 if (next != -100) {
                     str2 = list.get(next);
-
                     if (str.compareTo(str2) > 0) {
                         list.set(i, list.set(next, list.get(i)));
                         if (i > 0) {
@@ -62,21 +96,18 @@ public class Task02 {
                                 i = temp2;
                                 continue;
                             }
-
                         }
                     } else {
                         i++;
                         continue;
                     }
-
                 }
-            }
-            if (isInt(str)) {
+            } else if (isDigital(str)) {
                 int next = findNextToEnd(list, i);
                 if (next != -100) {
                     str2 = list.get(next);
-                    int n1 = Integer.valueOf(str);
-                    int n2 = Integer.valueOf(str2);
+                    double n1 = Double.valueOf(str);
+                    double n2 = Double.valueOf(str2);
                     if (n1 > n2) {
                         list.set(i, list.set(next, list.get(i)));
                         if (i > 0) {
@@ -92,6 +123,8 @@ public class Task02 {
                     }
                 }
             }
+
+
             i++;
         }
 
@@ -103,18 +136,18 @@ public class Task02 {
         String str = list.get(i);
         String str2;
         int k = -100;
-        if (!isInt(str)) {
+        if (!isDigital(str)) {
             for (int j = i - 1; j >= 0; j--) {
                 str2 = list.get(j);
-                if (!isInt(str2)) {
+                if (!isDigital(str2)) {
                     k = j;
                     break;
                 }
             }
-        } else if (isInt(str)) {
+        } else if (isDigital(str)) {
             for (int j = i - 1; j >= 0; j--) {
                 str2 = list.get(j);
-                if (isInt(str2)) {
+                if (isDigital(str2)) {
                     k = j;
                     break;
                 }
@@ -128,18 +161,18 @@ public class Task02 {
         String str = list.get(i);
         String str2;
         int k = -100;
-        if (!isInt(str)) {
+        if (!isDigital(str)) {
             for (int j = i + 1; j < list.size(); j++) {
                 str2 = list.get(j);
-                if (!isInt(str2)) {
+                if (!isDigital(str2)) {
                     k = j;
                     break;
                 }
             }
-        } else if (isInt(str)) {
+        } else if (isDigital(str)) {
             for (int j = i + 1; j < list.size(); j++) {
                 str2 = list.get(j);
-                if (isInt(str2)) {
+                if (isDigital(str2)) {
                     k = j;
                     break;
                 }
@@ -157,25 +190,19 @@ public class Task02 {
         }
     }
 
-   /* private static boolean isDigital(String str) {
-        boolean i;
-        boolean d;
-        try {
-            Integer.valueOf(str);
-            i = true;
-        } catch (NumberFormatException e) {
-            i = false;
-        }
+    private static boolean isDouble(String str) {
         try {
             Double.valueOf(str);
-
-            d = true;
+            return true;
         } catch (NumberFormatException e) {
-            d = false;
+            return false;
         }
-        if (i || d) return true;
+    }
+
+    private static boolean isDigital(String str) {
+        if (isInt(str) || isDouble(str)) return true;
         else return false;
 
 
-    }*/
+    }
 }

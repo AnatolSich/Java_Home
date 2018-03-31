@@ -5,10 +5,11 @@ import java.util.List;
 
 /**
  * Created by Toll on 30.11.2017.
+ * Не правильная сортировка
  */
 public class Task01 {
     public static void main(String[] args) {
-      //  System.out.println(isInt("2"));
+        //  System.out.println(isInt("2"));
         List<String> listIn = new ArrayList<>();
         listIn.add("wer");
         listIn.add("4");
@@ -31,43 +32,41 @@ public class Task01 {
     }
 
     private static List<String> sorting(List<String> list) {
+        for (int t = 0; t <list.size() ; t++) {
+
+        }
+
         for (int i = 0; i < list.size(); i++) {
             String str = list.get(i);
-            if (isDigital(str)) {
+            if (!isDigital(str)) {
                 int j = i + 1;
-                while (!isDigital(list.get(j))) {
+                while (isDigital(list.get(j))) {
                     j++;
                 }
                 String str2 = list.get(j);
                 if (str.compareTo(str2) > 0) {
-                    String temp = str;
-                    str = str2;
-                    str2 = temp;
+                    list.set(i, list.set(j, list.get(i)));
                 }
             } else {
                 if (isInt(str)) {
                     int n = Integer.valueOf(str);
                     int k = i + 1;
-                    while (isInt(list.get(k))) {
+                    while (!isInt(list.get(k))) {
                         k++;
                     }
                     int h = Integer.valueOf(list.get(k));
                     if (n > h) {
-                        int temp = n;
-                        n = h;
-                        h = temp;
+                        list.set(i, list.set(k, list.get(i)));
                     }
-                } else {
+                } else if (isDouble(str)) {
                     double n = Double.valueOf(str);
                     int k = i + 1;
-                    while (isInt(list.get(k))) {
+                    while (!isDouble(list.get(k))) {
                         k++;
                     }
                     double h = Double.valueOf(list.get(k));
                     if (n > h) {
-                        double temp = n;
-                        n = h;
-                        h = temp;
+                        list.set(i, list.set(k, list.get(i)));
                     }
                 }
 
@@ -75,12 +74,24 @@ public class Task01 {
             }
 
         }
+
+
+
         return list;
     }
 
     private static boolean isInt(String str) {
         try {
             Integer.valueOf(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private static boolean isDouble(String str) {
+        try {
+            Double.valueOf(str);
             return true;
         } catch (NumberFormatException e) {
             return false;

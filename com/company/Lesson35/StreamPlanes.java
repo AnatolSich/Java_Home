@@ -26,7 +26,6 @@ public class StreamPlanes {
     public static void main(String[] args) {
 
 
-
         List<Plane> planes = new ArrayList<>();
         List<Runway> runways = new ArrayList<>();
         FlightTower flightTower = new FlightTower(planes, runways);
@@ -49,11 +48,9 @@ public class StreamPlanes {
         Runway runway003 = new Runway("Runway003", flightTower);
 
 
-
         runways.add(runway001);
         runways.add(runway002);
         runways.add(runway003);
-
 
 
         Date start = new Date();
@@ -83,7 +80,7 @@ class FlightTower {
     }
 
     public void waiting(Thread thread) {
-        System.out.println(StreamPlanes.dateFormat.format(new Date().getTime())+" "+thread.getName() + " waiting...");
+        System.out.println(StreamPlanes.dateFormat.format(new Date().getTime()) + " " + thread.getName() + " waiting...");
         try {
             Thread.sleep(StreamPlanes.planeWait);
         } catch (InterruptedException e) {
