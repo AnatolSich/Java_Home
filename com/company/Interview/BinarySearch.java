@@ -11,7 +11,7 @@ public class BinarySearch {
     public static void main(String[] args) {
         input = bubbleOneFor(input);
         System.out.println(Arrays.toString(input));
-        System.out.println(binary(input,0,8,9));
+        System.out.println(binary(input,0,8,2));
 
 
     }
